@@ -75,4 +75,8 @@ public class Huffman {
         return -1;
     }
 
+    public void printStats(){
+        
+    }
+
 }
