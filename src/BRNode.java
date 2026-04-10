@@ -34,8 +34,12 @@ public class BRNode {
         return color;
     }
 
-    public void changeColor(){
-        color = !color;
+    public void setBlack(){
+        color = true;
+    }
+
+    public void setRed(){
+        color = false;
     }
 
     public void setParent(BRNode parent){
