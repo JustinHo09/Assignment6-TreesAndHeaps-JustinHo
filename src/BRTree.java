@@ -51,8 +51,8 @@ public class BRTree {
         balance(node);
     }
 
-    public void removeNode(int value){
-        // Search for node with that value
+    public void removeNode(BRNode node){
+        // do removal prep
 
         //Go through 6 cases
 
