@@ -15,11 +15,38 @@ public class BRTree {
     }
 
     public void insertNode(BRNode node){
+
         if(root == null){
             root = node;
-            root.changeColor();
+            root.setBlack();
+            root.setParent(null);
+            return;
         }
+
         // Find where to add and add
+        BRNode current = root;
+        while(current != null){
+            //left
+            if(node.getData() < current.getData()){
+                if(current.getLeft() == null){
+                    current.setLeft(node);
+                    node.setParent(current);
+                    current = null;
+                }else{
+                    current = current.getLeft();
+                }
+            }else{
+                if(current.getRight() == null){
+                    current.setRight(node);
+                    node.setParent(current);
+                    current = null;
+                }else{
+                    current = current.getRight();
+                }
+            }
+        }
+
+        node.setRed();
 
         //Rebalance if needed
     }
@@ -39,6 +66,41 @@ public class BRTree {
     }
 
     public void balance(BRNode node){
+
+        // it is root
+        if(node.getParent() == null){
+            node.setBlack();
+            return;
+        }
+
+
+        if(node.getParent().getColor()){
+            return;
+        }
+
+        BRNode parent = node.getParent();
+
+    }
+
+    public BRNode getGrandparent(BRNode node){
+        if(node.getParent() == null){
+            return null;
+        }
+
+        return node.getParent().getParent();
+
+    }
+
+    public BRNode getUncle(BRNode node){
+        if(node.getParent() == null || getGrandparent(node) == null){
+            return null;
+        }
+
+        if(getGrandparent(node).getLeft() == node.getParent()){
+            return getGrandparent(node).getRight();
+        }else{
+            return getGrandparent(node).getLeft();
+        }
 
     }
 
