@@ -48,7 +48,7 @@ public class BRTree {
 
         node.setRed();
 
-        //Rebalance if needed
+        balance(node);
     }
 
     public void removeNode(int value){
@@ -79,6 +79,34 @@ public class BRTree {
         }
 
         BRNode parent = node.getParent();
+        BRNode gramps = getGrandparent(node);
+        BRNode unc = getUncle(node);
+
+        if(unc != null && !unc.getColor()){
+            parent.setBlack();
+            unc.setBlack();
+            gramps.setRed();
+            balance(gramps);
+            return;
+        }
+
+        if(node == parent.getRight() && parent == gramps.getLeft()){
+            rotateLeft(parent);
+            node = parent;
+            parent = node.getParent();
+        } else if(node == parent.getLeft() && parent == gramps.getRight()){
+            rotateRight(parent);
+            node = parent;
+            parent = node.getParent();
+        }
+
+        parent.setBlack();
+        gramps.setRed();
+        if(node == parent.getLeft()){
+            rotateRight(gramps);
+        }else{
+            rotateLeft(gramps);
+        }
 
     }
 
