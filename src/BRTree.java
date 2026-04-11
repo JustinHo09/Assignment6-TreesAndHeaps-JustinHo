@@ -1,4 +1,38 @@
+import java.util.LinkedList;
+
 public class BRTree {
+
+    public static void main(String[] args){
+        int [] nodes = {10,19,20,30,42,55,77};
+        BRTree tree = new BRTree(nodes);
+        System.out.print('{');
+        tree.printTree(tree.getRoot());
+
+        System.out.println("}\n-----------------");
+
+        tree.inRange(15,20);
+        System.out.print('{');
+        tree.printTree(tree.getRoot());
+        int [] nodes2 = {10,19,20,30,42,55,77};
+        tree = new BRTree(nodes2);
+
+        System.out.println("}\n-----------------");
+
+        tree.inRange(0,2);
+        System.out.print('{');
+        tree.printTree(tree.getRoot());
+        int [] nodes3 = {10,19,20,30,42,55,77};
+        tree = new BRTree(nodes3);
+
+        System.out.println("}\n-----------------");
+
+        tree.inRange(25,60);
+        System.out.print('{');
+        tree.printTree(tree.getRoot());
+        int [] nodes4 = {10,19,20,30,42,55,77};
+        tree = new BRTree(nodes4);
+        System.out.print('}');
+    }
 
     BRNode root;
 
@@ -210,19 +244,37 @@ public class BRTree {
             return node;
         }
 
-        if(node.getLeft() != null){
-            search(key,node.getLeft());
+        if(key < node.getData()){
+            return search(key, node.getLeft());
+        }else{
+            return search(key, node.getRight());
+        }
+    }
+
+    public void inRange(int min, int max){
+        LinkedList<Integer> toBeRemoved = new LinkedList<>();
+        addKeysInRange(root,min,max,toBeRemoved);
+        while(!toBeRemoved.isEmpty()){
+            remove(toBeRemoved.remove());
+        }
+    }
+
+    public void addKeysInRange(BRNode node, int min, int max, LinkedList<Integer> targets){
+        if(node == null){
+            return;
         }
 
-        if(node.getRight() != null){
-            search(key,node.getRight());
+        if(node.getData() >= min && node.getData() <= max){
+            targets.addFirst(node.getData());
         }
-        return null;
+        addKeysInRange(node.getLeft(),min,max,targets);
+        addKeysInRange(node.getRight(),min,max,targets);
     }
 
     public void remove(int key){
         BRNode target = search(key,root);
         if(target == null){
+            System.out.println("could not find target");
             return;
         }
 
@@ -233,7 +285,11 @@ public class BRTree {
             }
             int predKey = predecessor.getData();
 
-            remove(predKey);
+            if(target.getColor() == true) {
+                removalPrep(target);
+            }
+
+            bstRemove(predecessor);
 
             target.setData(predKey);
 
@@ -258,36 +314,37 @@ public class BRTree {
 
         // Leaf
         if(node.getRight() == null && node.getLeft() == null){
-            if(node == node.getParent().getLeft()){
-                node.getParent().setLeft(null);
+            if(node.getParent() !=null) {
+                if (node == node.getParent().getLeft()) {
+                    node.getParent().setLeft(null);
+                } else {
+                    node.getParent().setRight(null);
+                }
             }else{
-                node.getParent().setRight(null);
+                root = null;
             }
             return;
         }
 
         // One child
-        if(node.getRight()== null || node.getLeft() == null){
-            if(node.getRight() == null){
-                if(node.getParent() == null){
-                    root = node.getLeft();
-                }else if(node == node.getParent().getLeft()){
-                    node.getParent().setLeft(node.getLeft());
-                    node.getLeft().setParent(node.getParent());
-                }else{
-                    node.getParent().setRight(node.getRight());
-                    node.getRight().setParent(node.getParent());
-                }
+        if(node.getRight() == null || node.getLeft() == null){
+            BRNode child;
+            if(node.getRight() != null){
+                child = node.getRight();
             }else{
-                if(node.getParent() == null){
-                    root = node.getRight();
-                }else if(node == node.getParent().getRight()){
-                    node.getParent().setRight(node.getRight());
-                    node.getRight().setParent(node.getParent());
+                child = node.getLeft();
+            }
+
+            if(node.getParent() == null){
+                root = child;
+                child.setParent(null);
+            }else{
+                if(node == node.getParent().getRight()){
+                    node.getParent().setRight(child);
                 }else{
-                    node.getParent().setLeft(node.getLeft());
-                    node.getLeft().setParent(node.getParent());
+                    node.getParent().setLeft(child);
                 }
+                child.setParent(node.getParent());
             }
             return;
         }
@@ -370,5 +427,14 @@ public class BRTree {
         }else{
             parent.setLeft(right);
         }
+    }
+
+    public void printTree(BRNode root){
+        if(root == null){
+            return;
+        }
+        printTree(root.getLeft());
+        System.out.print(root.getData() + ",");
+        printTree(root.getRight());
     }
 }
