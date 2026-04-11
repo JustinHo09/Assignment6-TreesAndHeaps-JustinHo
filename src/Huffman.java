@@ -3,6 +3,7 @@ public class Huffman {
     public int[] frequency;
     public HeapNode root;
     public String[] codes;
+    public String ogText;
 
     public Huffman(){
         frequency = new int[27];
@@ -11,6 +12,7 @@ public class Huffman {
     }
 
     public void frequencyCount(String text){
+        ogText = text;
         // reset the frequency
         for(int i=0; i<frequency.length;i++){
             frequency[i] = 0;
@@ -106,6 +108,14 @@ public class Huffman {
             return left;
         }
         return getPath(node.getRight(),target,path+"1");
+    }
+
+    public String encode(String text){
+        String result = null;
+        for(int i=0; i<text.length();i++){
+            result += codes[charToNum(text.charAt(i))];
+        }
+        return result;
     }
 
     public int charToNum(char c){
@@ -228,12 +238,25 @@ public class Huffman {
 
 
     public void printStats(){
+        // Frequency Table
         System.out.println("Frequencies:");
         for(int i=0; i<frequency.length;i++){
             if(frequency[i] >0){
                 System.out.println(numToChar(i)+ " : " +frequency[i]);
             }
         }
+        //Huffman Code mapping
+        for(int i=0; i<codes.length; i++){
+            if(codes[i] != null){
+                if(numToChar(i) ==' ') {
+                    System.out.println("(space) : " + codes[i]);
+                }else {
+                    System.out.println(numToChar(i) + ": " + codes[i]);
+                }
+            }
+        }
+        //encoded string;
+        System.out.println("Encoded \n" + encode(ogText));
     }
 
 }
