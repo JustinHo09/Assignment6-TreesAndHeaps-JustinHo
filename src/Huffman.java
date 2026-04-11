@@ -2,16 +2,20 @@ public class Huffman {
 
     public int[] frequency;
     public HeapNode root;
+    public String[] codes;
 
     public Huffman(){
         frequency = new int[27];
+        codes = new String[27];
+        root = null;
     }
 
     public void frequencyCount(String text){
+        // reset the frequency
         for(int i=0; i<frequency.length;i++){
             frequency[i] = 0;
         }
-
+        // calculate frequency
         for(int j=0; j<text.length(); j++){
             frequency[charToNum(text.charAt(j))]++;
         }
@@ -67,6 +71,41 @@ public class Huffman {
             }
         }
         return smallestIndex;
+    }
+
+    public void genCode(){
+        if(root == null){
+            return;
+        }
+
+        // Reset the codes
+        for(int i=0; i< codes.length;i++){
+            codes[i] = null;
+        }
+
+        // Fill the codes in for valid ones
+        char target;
+        for(int i=0; i< frequency.length; i++){
+            if(frequency[i] > 0){
+                target = numToChar(i);
+                codes[i] = getPath(root,target,"");
+            }
+        }
+    }
+
+    public String getPath(HeapNode node,char target, String path){
+        if(node == null){
+            return null;
+        }
+        // We encounter the desired node
+        if(target == node.getData()){
+            return path;
+        }
+        String left = getPath(node.getLeft(),target,path+"0");
+        if(left != null){
+            return left;
+        }
+        return getPath(node.getRight(),target,path+"1");
     }
 
     public int charToNum(char c){
