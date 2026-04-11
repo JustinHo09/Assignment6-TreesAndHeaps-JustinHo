@@ -217,7 +217,7 @@ public class BRTree {
         if(node.getRight() != null){
             search(key,node.getRight());
         }
-
+        return null;
     }
 
     public void remove(int key){
