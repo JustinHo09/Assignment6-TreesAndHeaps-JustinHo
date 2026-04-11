@@ -42,6 +42,8 @@ public class BRNode {
         color = false;
     }
 
+    public void setData(int newData) {data = newData; }
+
     public void setParent(BRNode parent){
         this.parent = parent;
     }
