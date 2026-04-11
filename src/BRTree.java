@@ -202,16 +202,97 @@ public class BRTree {
 
     }
 
-    public void remove(BRNode node){
+    public BRNode search(int key, BRNode node){
+        if(node == null){
+            return null;
+        }
+        if(key == node.getData()){
+            return node;
+        }
+
+        if(node.getLeft() != null){
+            search(key,node.getLeft());
+        }
+
+        if(node.getRight() != null){
+            search(key,node.getRight());
+        }
+
+    }
+
+    public void remove(int key){
+        BRNode target = search(key,root);
+        if(target == null){
+            return;
+        }
+
+        if(target.getRight() != null && target.getLeft() != null){
+            BRNode predecessor = target.getLeft();
+            while(predecessor.getRight() != null){
+                predecessor = predecessor.getRight();
+            }
+            int predKey = predecessor.getData();
+
+            remove(predKey);
+
+            target.setData(predKey);
+
+            return;
+        }
+
+        if(target.getColor() == true) {
+            removalPrep(target);
+        }
+
+        bstRemove(target);
+
+        if(root != null && root.getColor() == false){
+            root.setBlack();
+        }
+    }
+
+    public void bstRemove(BRNode node){
         if(node == null){
             return;
         }
 
-        removalPrep(node);
+        // Leaf
+        if(node.getRight() == null && node.getLeft() == null){
+            if(node == node.getParent().getLeft()){
+                node.getParent().setLeft(null);
+            }else{
+                node.getParent().setRight(null);
+            }
+            return;
+        }
 
-        BRNode parent = node.getParent();
-
+        // One child
+        if(node.getRight()== null || node.getLeft() == null){
+            if(node.getRight() == null){
+                if(node.getParent() == null){
+                    root = node.getLeft();
+                }else if(node == node.getParent().getLeft()){
+                    node.getParent().setLeft(node.getLeft());
+                    node.getLeft().setParent(node.getParent());
+                }else{
+                    node.getParent().setRight(node.getRight());
+                    node.getRight().setParent(node.getParent());
+                }
+            }else{
+                if(node.getParent() == null){
+                    root = node.getRight();
+                }else if(node == node.getParent().getRight()){
+                    node.getParent().setRight(node.getRight());
+                    node.getRight().setParent(node.getParent());
+                }else{
+                    node.getParent().setLeft(node.getLeft());
+                    node.getLeft().setParent(node.getParent());
+                }
+            }
+            return;
+        }
     }
+
 
     public BRNode getGrandparent(BRNode node){
         if(node.getParent() == null){
