@@ -1,6 +1,7 @@
 public class Huffman {
 
     public int[] frequency;
+    public HeapNode root;
 
     public Huffman(){
         frequency = new int[27];
@@ -14,6 +15,58 @@ public class Huffman {
         for(int j=0; j<text.length(); j++){
             frequency[charToNum(text.charAt(j))]++;
         }
+    }
+
+    public void buildHuffman(){
+        HeapNode [] nodes = new HeapNode[53];
+        int currentSize = 0;
+
+        // Makes the character leaves and adds it to the array
+        for(int i=0; i< frequency.length;i++){
+            if(frequency[i] >0){
+                nodes[currentSize] = new HeapNode(numToChar(i),frequency[i]);
+                currentSize++;
+            }
+        }
+        //  It is empty
+        if(currentSize == 0){
+            return;
+        }
+        // Merge the nodes
+        int merges = currentSize -1;
+        int leftIndex;
+        int rightIndex;
+        HeapNode left;
+        HeapNode right;
+
+        for(int i=0; i<merges; i++){
+
+            // Find the first smallest one
+            leftIndex = findSmallest(nodes, currentSize);
+            left = nodes[leftIndex];
+            nodes[leftIndex] = null;
+
+            // Find the second smallest one
+            rightIndex = findSmallest(nodes, currentSize);
+            right = nodes[rightIndex];
+            nodes[rightIndex] = null;
+
+            nodes[currentSize] = new HeapNode(left,right);
+            currentSize++;
+        }
+        root = nodes[currentSize -1];
+    }
+
+    public int findSmallest(HeapNode[] nodes, int largestSize){
+        int smallestIndex = 0;
+        for(int i=0; i<largestSize; i++){
+            if(nodes[i] != null){
+                if(nodes[i].getFrequency() < nodes[smallestIndex].getFrequency()){
+                    smallestIndex = i;
+                }
+            }
+        }
+        return smallestIndex;
     }
 
     public int charToNum(char c){
