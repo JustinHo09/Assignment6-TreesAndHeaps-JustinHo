@@ -51,12 +51,104 @@ public class BRTree {
         balance(node);
     }
 
-    public void removeNode(BRNode node){
+    public void removalPrep(BRNode node){
         // do removal prep
-
         //Go through 6 cases
+        // Case 1 node is red or root
+        if(node.getColor() == false || node.getParent() == null){
+            return;
+        }
 
-        // Do bst remove
+        //Case 2 Sibling is red
+        BRNode parent = node.getParent();
+        BRNode sibling = getSibling(node);
+        if(sibling != null && sibling.getColor() == false){
+            parent.setRed();
+            sibling.setBlack();
+            if(parent.getLeft() == node){
+                rotateLeft(parent);
+            }else{
+                rotateRight(parent);
+            }
+        }
+
+        parent = node.getParent();
+        sibling = getSibling(node);
+        // Case 3 parent and kids are black
+        if(sibling != null) {
+            if (parent.getColor() == true && (sibling.getRight() == null || sibling.getRight().getColor() == true)
+                    && (sibling.getLeft() == null || sibling.getLeft().getColor() == true)) {
+
+                sibling.setRed();
+                removalPrep(node.getParent());
+                return;
+            }
+        }
+
+        parent = node.getParent();
+        sibling = getSibling(node);
+        //Case 4 parent is red and kids are black
+        if(sibling != null) {
+            if (parent.getColor() == false && (sibling.getRight() == null || sibling.getRight().getColor() == true)
+                    && (sibling.getLeft() == null || sibling.getLeft().getColor() == true)) {
+                parent.setBlack();
+                sibling.setRed();
+                return;
+            }
+        }
+
+        sibling = getSibling(node);
+        parent = node.getParent();
+        //Case 5
+        if(sibling != null) {
+            if ((sibling.getLeft() != null && sibling.getLeft().getColor() == false)
+                    && (sibling.getRight() == null || sibling.getRight().getColor() == true)
+                    && node == parent.getLeft()) {
+                getSibling(node).setRed();
+                getSibling(node).getLeft().setBlack();
+                rotateRight(getSibling(node));
+            }
+        }
+
+        sibling = getSibling(node);
+        parent = node.getParent();
+        //Case 6
+        if(sibling != null) {
+            if ((sibling.getLeft() == null || sibling.getLeft().getColor() == true)
+                    && (sibling.getRight() != null && sibling.getRight().getColor() == false)
+                    && node == parent.getRight()) {
+                getSibling(node).setRed();
+                getSibling(node).getRight().setBlack();
+                rotateLeft(getSibling(node));
+            }
+        }
+
+        sibling = getSibling(node);
+        parent = node.getParent();
+        // Step 7
+        if(sibling != null) {
+            if (parent.getColor() == true) {
+                sibling.setBlack();
+            } else {
+                sibling.setRed();
+            }
+        }
+        parent.setBlack();
+
+        // Step 8
+        if(sibling != null) {
+            if (node == parent.getLeft()) {
+                if (sibling.getRight() != null) {
+                    sibling.getRight().setBlack();
+                }
+                rotateLeft(parent);
+            } else {
+                if (sibling.getLeft() != null) {
+                    sibling.getLeft().setBlack();
+                }
+                rotateRight(parent);
+            }
+        }
     }
 
     public void arrayToBR(int[] array){
@@ -110,6 +202,17 @@ public class BRTree {
 
     }
 
+    public void remove(BRNode node){
+        if(node == null){
+            return;
+        }
+
+        removalPrep(node);
+
+        BRNode parent = node.getParent();
+
+    }
+
     public BRNode getGrandparent(BRNode node){
         if(node.getParent() == null){
             return null;
@@ -130,6 +233,15 @@ public class BRTree {
             return getGrandparent(node).getLeft();
         }
 
+    }
+
+    public BRNode getSibling(BRNode node){
+        BRNode parent = node.getParent();
+        if(parent.getRight() == node){
+            return parent.getLeft();
+        }else{
+            return parent.getRight();
+        }
     }
 
     public void rotateRight(BRNode node){
