@@ -9,6 +9,13 @@ public class EncodingSystem {
     public static void main(String[] args){
         String[] texts = {"marcus fenix is a gear"};
         EncodingSystem test = new EncodingSystem(texts);
+        System.out.println("Codes:");
+        test.printCodes();
+        System.out.println("Highest Code: ");
+        System.out.println(test.highestCode());
+        test.shuffleCodes();
+        test.printCodes();
+        test.printCodeStats();
     }
 
     public EncodingSystem(String[] texts){
@@ -38,6 +45,10 @@ public class EncodingSystem {
     }
 
     public String[] shuffleCodes(){
+        if(encoded.length == 0){
+            return null;
+        }
+        System.out.println("Shuffled Codes:");
         Random gen = new Random();
         int rand;
         for(int i = 0; i<encoded.length; i++){
@@ -53,6 +64,17 @@ public class EncodingSystem {
     public void printCodes(){
         for(int i=0; i<encoded.length; i++){
             System.out.println(encoded[i]);
+        }
+    }
+
+    public void printCodeStats(){
+        // Re-do the frequency and build for all of them to print all of
+        // their stats becuase the huff replaces all data each time it does another
+        // build and frequency count, so this is needed.
+        for(int i=0; i< inputs.length; i++){
+            huff.frequencyCount(inputs[i]);
+            huff.buildHuffman();
+            huff.printStats();
         }
     }
 }
