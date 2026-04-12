@@ -14,11 +14,24 @@ public class EncodingSystem {
         inputs = texts;
         encoded = new String[texts.length];
 
-        // Fill the encoded array with all of the encoded strings
+        // Fill the encoded array with all the encoded strings
         for(int i=0; i< texts.length; i++){
             huff.frequencyCount(texts[i]);
             huff.buildHuffman();
             encoded[i] = huff.encode(texts[i]);
         }
+    }
+
+    public String highestCode(){
+        if(encoded.length == 0){
+            return null;
+        }
+        int longest = 0;
+        for(int i=0; i< encoded.length;i++){
+            if(encoded[i].length() > encoded[longest].length()){
+                longest = i;
+            }
+        }
+        return encoded[longest];
     }
 }
