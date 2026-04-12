@@ -61,6 +61,8 @@ public class Huffman {
             currentSize++;
         }
         root = nodes[currentSize -1];
+        
+        genCode();
     }
 
     public int findSmallest(HeapNode[] nodes, int largestSize){
