@@ -381,6 +381,7 @@ public class BRTree {
                 return node.getParent().getRight();
             }
         }
+        return null;
     }
 
     public void rotateRight(BRNode node){
