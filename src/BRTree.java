@@ -285,8 +285,8 @@ public class BRTree {
             }
             int predKey = predecessor.getData();
 
-            if(target.getColor() == true) {
-                removalPrep(target);
+            if(predecessor.getColor() == true) {
+                removalPrep(predecessor);
             }
 
             bstRemove(predecessor);
@@ -374,11 +374,12 @@ public class BRTree {
     }
 
     public BRNode getSibling(BRNode node){
-        BRNode parent = node.getParent();
-        if(parent.getRight() == node){
-            return parent.getLeft();
-        }else{
-            return parent.getRight();
+        if(node.getParent() != null) {
+            if (node.getParent().getRight() == node) {
+                return node.getParent().getLeft();
+            } else {
+                return node.getParent().getRight();
+            }
         }
     }
 
