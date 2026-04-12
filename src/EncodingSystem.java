@@ -38,16 +38,21 @@ public class EncodingSystem {
     }
 
     public String[] shuffleCodes(){
-        String[] shuffle = encoded;
         Random gen = new Random();
         int rand;
-        for(int i = 0; i<shuffle.length; i++){
-            rand = gen.nextInt(i,shuffle.length);
+        for(int i = 0; i<encoded.length; i++){
+            rand = gen.nextInt(i,encoded.length);
 
-            String temp = shuffle[i];
-            shuffle[i] = shuffle[rand];
-            shuffle[rand] = temp;
+            String temp = encoded[i];
+            encoded[i] = encoded[rand];
+            encoded[rand] = temp;
         }
-        return shuffle;
+        return encoded;
+    }
+
+    public void printCodes(){
+        for(int i=0; i<encoded.length; i++){
+            System.out.println(encoded[i]);
+        }
     }
 }
