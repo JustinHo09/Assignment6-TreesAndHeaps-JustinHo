@@ -113,9 +113,11 @@ public class Huffman {
     }
 
     public String encode(String text){
-        String result = null;
+        String result = "";
         for(int i=0; i<text.length();i++){
-            result += codes[charToNum(text.charAt(i))];
+            if(codes[charToNum(text.charAt(i))] != null) {
+                result += codes[charToNum(text.charAt(i))];
+            }
         }
         return result;
     }
