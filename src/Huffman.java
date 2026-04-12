@@ -66,10 +66,10 @@ public class Huffman {
     }
 
     public int findSmallest(HeapNode[] nodes, int largestSize){
-        int smallestIndex = 0;
+        int smallestIndex = -1;
         for(int i=0; i<largestSize; i++){
             if(nodes[i] != null){
-                if(nodes[i].getFrequency() < nodes[smallestIndex].getFrequency()){
+                if(smallestIndex == -1 || nodes[i].getFrequency() < nodes[smallestIndex].getFrequency()){
                     smallestIndex = i;
                 }
             }
@@ -246,10 +246,16 @@ public class Huffman {
         System.out.println("Frequencies:");
         for(int i=0; i<frequency.length;i++){
             if(frequency[i] >0){
-                System.out.println(numToChar(i)+ " : " +frequency[i]);
+                if(numToChar(i) == ' '){
+                    System.out.println("(space) : " +frequency[i]);
+                }else{
+                    System.out.println(numToChar(i)+ " : " +frequency[i]);
+                }
+
             }
         }
         //Huffman Code mapping
+        System.out.println("Huffman Codes:");
         for(int i=0; i<codes.length; i++){
             if(codes[i] != null){
                 if(numToChar(i) ==' ') {
