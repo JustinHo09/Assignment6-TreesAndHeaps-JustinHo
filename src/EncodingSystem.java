@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class EncodingSystem {
 
     public Huffman huff;
@@ -33,5 +35,19 @@ public class EncodingSystem {
             }
         }
         return encoded[longest];
+    }
+
+    public String[] shuffleCodes(){
+        String[] shuffle = encoded;
+        Random gen = new Random();
+        int rand;
+        for(int i = 0; i<shuffle.length; i++){
+            rand = gen.nextInt(i,shuffle.length);
+
+            String temp = shuffle[i];
+            shuffle[i] = shuffle[rand];
+            shuffle[rand] = temp;
+        }
+        return shuffle;
     }
 }
