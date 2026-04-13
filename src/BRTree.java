@@ -293,17 +293,17 @@ public class BRTree {
 
             target.setData(predKey);
 
-            return;
-        }
+        }else {
 
-        if(target.getColor() == true) {
-            removalPrep(target);
-        }
+            if (target.getColor() == true) {
+                removalPrep(target);
+            }
 
-        bstRemove(target);
+            bstRemove(target);
 
-        if(root != null && root.getColor() == false){
-            root.setBlack();
+            if (root != null && root.getColor() == false) {
+                root.setBlack();
+            }
         }
     }
 
