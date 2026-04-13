@@ -277,13 +277,13 @@ public class BRTree {
             System.out.println("could not find target");
             return;
         }
-
+        int predKey;
         if(target.getRight() != null && target.getLeft() != null){
             BRNode predecessor = target.getLeft();
             while(predecessor.getRight() != null){
                 predecessor = predecessor.getRight();
             }
-            int predKey = predecessor.getData();
+            predKey = predecessor.getData();
 
             if(predecessor.getColor() == true) {
                 removalPrep(predecessor);
