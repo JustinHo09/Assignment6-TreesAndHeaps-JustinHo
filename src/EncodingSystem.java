@@ -7,7 +7,7 @@ public class EncodingSystem {
     public String[] encoded;
 
     public static void main(String[] args){
-        String[] texts = {"aaaaaaaaaaaaa bbbbbbbb ccccc ddd ee f"};
+        String[] texts = {"marcus fenix is a gear"};
         EncodingSystem test = new EncodingSystem(texts);
         System.out.println("Codes:");
         test.printCodes();
