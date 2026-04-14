@@ -11,6 +11,9 @@ public class Huffman {
         root = null;
     }
 
+    //O(m) since it reset is O(27)
+    // Second one is length of input string, upperbounded by m
+    // O(1) space since only happen 2 time no matter what
     public void frequencyCount(String text){
         ogText = text;
         // reset the frequency
@@ -23,6 +26,8 @@ public class Huffman {
         }
     }
 
+    //O(1) since freq is always 27, and merges is upper bounded by 27
+    //O(1) space since cariabes happen 1 and array is awlays 53
     public void buildHuffman(){
         HeapNode [] nodes = new HeapNode[53];
         int currentSize = 0;
@@ -65,6 +70,8 @@ public class Huffman {
         genCode();
     }
 
+    //O(largest size), but since 53 is always in it, its O(1)
+    //O(1) space cinde thosee 2 only happen once no matter how large input
     public int findSmallest(HeapNode[] nodes, int largestSize){
         int smallestIndex = -1;
         for(int i=0; i<largestSize; i++){
@@ -77,6 +84,8 @@ public class Huffman {
         return smallestIndex;
     }
 
+    //O(1) since codes.leng is alway 27, frequency is 27
+    //O(1) since i and target will only happen once
     public void genCode(){
         if(root == null){
             return;
@@ -97,6 +106,12 @@ public class Huffman {
         }
     }
 
+    //O(1) since at most it will just have 27 levels in the tree
+    // This also means that string concat in worst case will be
+    // make a string from 0 to k = k^2 but k is always <= 27 since
+    // There are only 27 valid paths to reach before a character in case
+    // where is is a linked list.
+    // Space follows the same logic
     public String getPath(HeapNode node,char target, String path){
         if(node == null){
             return null;
@@ -112,6 +127,8 @@ public class Huffman {
         return getPath(node.getRight(),target,path+"1");
     }
 
+    // This is O(m^2) since the strings go from 0 to 1*c to m*c
+    // byt c is upper bounded by 27 since we only have 27 charactres
     public String encode(String text){
         String result = "";
         for(int i=0; i<text.length();i++){
@@ -122,6 +139,7 @@ public class Huffman {
         return result;
     }
 
+    //O(1) no matter what
     public int charToNum(char c){
         if(c == ' '){
             return 0;
@@ -180,7 +198,7 @@ public class Huffman {
         }
         return -1;
     }
-
+    //O(1) no matter what
     public char numToChar(int i){
         if(i == 0){
             return ' ';
@@ -244,6 +262,8 @@ public class Huffman {
     public void printStats(){
         // Frequency Table
         System.out.println("Frequencies:");
+        //O(1) time since its always 27
+        // Space is also O(1) always
         for(int i=0; i<frequency.length;i++){
             if(frequency[i] >0){
                 if(numToChar(i) == ' '){
@@ -255,6 +275,8 @@ public class Huffman {
             }
         }
         //Huffman Code mapping
+        //O(1) space since codes is always 27
+        // Space is also always O(1)
         System.out.println("Huffman Codes:");
         for(int i=0; i<codes.length; i++){
             if(codes[i] != null){
@@ -266,6 +288,7 @@ public class Huffman {
             }
         }
         //encoded string;
+        // O(m^2) since encode is m^2
         System.out.println("Encoded \n" + encode(ogText));
     }
 
