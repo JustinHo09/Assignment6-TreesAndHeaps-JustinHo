@@ -10,6 +10,7 @@ public class HeapNode {
         frequency = freq;
     }
 
+    //! used since it is not a vlid input
     public HeapNode(HeapNode l, HeapNode r){
         left = l;
         right = r;
