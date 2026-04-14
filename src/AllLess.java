@@ -1,7 +1,7 @@
 public class AllLess {
 
     public static void main(String[] args){
-        String[] input = {"zero","size","nutella","jojo","luna","isse","astor",
+        String[] input = {"zero","size","nutella",null,"jojo","luna","isse","astor",
                 "as","entretien","","cal"};
         int x = 3;
         printLess(input,x);
@@ -34,7 +34,7 @@ public class AllLess {
 
             String current = input[i];
 
-            if(current.length() < max){
+            if(current != null && current.length() < max){
 
                 if(!first) {
                     System.out.print(", ");
