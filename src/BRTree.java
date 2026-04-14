@@ -40,6 +40,7 @@ public class BRTree {
         this.root = root;
     }
 
+    //Constructor to convert an array of keys into a tree
     public BRTree(int[] array){
         arrayToBR(array);
     }
