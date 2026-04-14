@@ -9,6 +9,7 @@ public class BRNode {
     // True is black and False is red
     private boolean color;
 
+    //default is a red node
     public BRNode(int data){
         this.data = data;
         color = false;
