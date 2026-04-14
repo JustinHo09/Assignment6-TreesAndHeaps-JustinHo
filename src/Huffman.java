@@ -42,6 +42,9 @@ public class Huffman {
         //  It is empty
         if(currentSize == 0){
             return;
+        }else if(currentSize == 1){
+            codes[charToNum(nodes[0].getData())] = "0";
+            return;
         }
         // Merge the nodes
         int merges = currentSize -1;
@@ -279,7 +282,7 @@ public class Huffman {
         // Space is also always O(1)
         System.out.println("Huffman Codes:");
         for(int i=0; i<codes.length; i++){
-            if(codes[i] != null){
+            if(frequency[i] > 0 && codes[i] != null){
                 if(numToChar(i) ==' ') {
                     System.out.println("(space) : " + codes[i]);
                 }else {
