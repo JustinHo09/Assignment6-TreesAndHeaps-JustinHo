@@ -21,6 +21,7 @@ public class EncryptedBT {
             return false;
         }
 
+        // Root is alwasy 1 so just return if thats the target
         if(target == 1){
             return true;
         }
